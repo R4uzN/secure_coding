@@ -1,5 +1,5 @@
 
-# Secure Used-Items Trading Platform
+# Tiny Second-hand Shopping Platform
 
 Flask 기반의 중고거래 플랫폼입니다. CSRF 방지, XSS 방지, 입력 검증, 인증/인가, 비밀번호 해싱 등 웹 보안의 기본 원칙을 직접 적용하여 개발한 시큐어 코딩 실습 프로젝트입니다.
 
