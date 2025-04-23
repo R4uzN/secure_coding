@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}{{ product.title | e }}{% endblock %}
+
+{% block content %}
+  <h2>{{ product.title | e }}</h2>
+
+  {% if product.image %}
+    <img src="{{ url_for('static', filename='uploads/' ~ product.image | urlencode) }}"
+         alt="상품 이미지"
+         style="width: 100%; max-width: 400px; border-radius: 12px; margin-bottom: 20px;">
+  {% endif %}
+
+  <p><strong>가격:</strong> {{ product.price | int }}원</p>
+
+  <p><strong>설명:</strong> {{ product.description | e }}</p>
+
+  <p><strong>판매자:</strong> 
+    <a href="{{ url_for('view_user', user_id=product.seller_id) }}" style="color: #007bff; text-decoration: none;">
+      {{ product.seller_name | e }}
+    </a>
+  </p>
+
+  {% if session.get('user_id') and product.seller_id != session['user_id'] %}
+    <a href="{{ url_for('start_chat', user_id=product.seller_id) }}" 
+       style="display: inline-block; margin-top: 20px; padding: 10px 20px; background: #007bff; color: white; border-radius: 8px; text-decoration: none;">
+      💬 1:1 채팅하기
+    </a>
+  {% endif %}
+{% endblock %}

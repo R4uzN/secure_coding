@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{ user.username | e }}님의 프로필{% endblock %}
+{% block content %}
+<h2>{{ user.username | e }}님의 프로필</h2>
+
+<p><strong>소개글:</strong> {{ user.bio | default('등록된 소개글이 없습니다.') | e }}</p>
+
+<form method="get" action="{{ url_for('transfer_page', user_id=user.id) }}">
+  <button type="submit" class="btn-transfer">💸 송금하기</button>
+</form>
+
+<form method="get" action="{{ url_for('report') }}">
+  <input type="hidden" name="target_type" value="user">
+  <input type="hidden" name="target_id" value="{{ user.id }}">
+  <button type="submit" class="report-link">🚨 사용자 신고하기</button>
+</form>
+
+{% endblock %}

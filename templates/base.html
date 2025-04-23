@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}중고거래 플랫폼{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <nav>
+    <h1>MyMarket</h1>
+    {% if session.get('user_id') %}
+      <a href="{{ url_for('dashboard') }}">🏠 대시보드</a>
+      <a href="{{ url_for('my_products') }}">📦 내 상품</a>
+      <a href="{{ url_for('profile') }}">👤 프로필</a>
+      <a href="{{ url_for('chat_list') }}">💌 채팅</a>
+      <a href="{{ url_for('transaction_history') }}">📜 거래내역</a>
+      <a href="{{ url_for('logout') }}">🚪 로그아웃</a>
+      {% if user and user.username == 'admin' %}
+        <hr>
+        <strong style="color: #ffcc00;">관리자 메뉴</strong>
+        <a href="{{ url_for('report_list') }}">🚨 신고 목록 보기</a>
+        <a href="{{ url_for('suspended_users') }}">😴 휴면 계정 관리</a>
+      {% endif %}
+    {% else %}
+      <a href="{{ url_for('login') }}">🔐 로그인</a>
+      <a href="{{ url_for('register') }}">📝 회원가입</a>
+    {% endif %}
+  </nav>
+  
+  <div class="container">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash">
+          {% for message in messages %}
+            <p>{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </div>
+
+  <script>
+    const socket = io();
+
+    socket.on('connect', () => {
+      console.log("📡 채팅 서버 연결됨");
+    });
+
+    socket.on('broadcast_message', data => {
+      const div = document.createElement('div');
+      const username = document.createTextNode(data.username + ": ");
+      const msg = document.createTextNode(data.message);
+      div.appendChild(username);
+      div.appendChild(msg);
+      document.getElementById('chat-messages').appendChild(div);
+      div.scrollIntoView();
+    });
+
+    function sendMessage() {
+      const input = document.getElementById('chat-input');
+      const msg = input.value.trim();
+      if (msg) {
+        socket.emit('send_message', {
+          username: "{{ user.username | e if user else '익명' }}",
+          message: msg
+        });
+        input.value = '';
+      }
+    }
+  </script>
+
+</body>
+</html>

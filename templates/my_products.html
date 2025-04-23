@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}내 상품 목록{% endblock %}
+{% block content %}
+<h2>내가 등록한 상품</h2>
+
+<div class="product-list">
+  {% for p in products %}
+    <a href="{{ url_for('edit_product', product_id=p.id) }}" style="text-decoration: none; color: inherit;">
+      <div class="product-card">
+        <h3 class="{% if p.is_blocked %}blocked-title{% else %}normal-title{% endif %}">
+          {{ p.title }}
+        </h3>
+        <p>{{ p.description }}</p>
+        <strong>{{ p.price }}원</strong>
+        {% if p.is_blocked %}
+          <p style="color: red; font-weight: bold;">🚫 신고 누적으로 차단됨</p>
+        {% endif %}
+      </div>
+    </a>
+  {% else %}
+    <p>등록된 상품이 없습니다.</p>
+  {% endfor %}
+</div>
+
+<p><a href="{{ url_for('new_product') }}">➕ 새 상품 등록</a></p>
+{% endblock %}

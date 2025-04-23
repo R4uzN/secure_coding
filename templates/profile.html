@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}프로필 관리{% endblock %}
+{% block content %}
+<h2>프로필 관리</h2>
+<p>사용자명: {{ user['username'] }}</p>
+
+<form method="POST" autocomplete="off">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">  
+  <label for="bio">소개글:</label>
+  <textarea name="bio" id="bio" maxlength="500" required>{{ user['bio'] or '' }}</textarea>
+
+  <button type="submit" name="action" value="update_bio">저장</button>
+</form>
+
+<hr>
+
+<h3>비밀번호 변경</h3>
+<form method="POST" autocomplete="off">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">  
+  <label for="current_pw">현재 비밀번호:</label>
+  <input type="password" id="current_pw" name="current_pw" maxlength="64" required>
+
+  <label for="new_pw">새 비밀번호:</label>
+  <input type="password" id="new_pw" name="new_pw" maxlength="64" required>
+
+  <button type="submit" name="action" value="change_pw">변경</button>
+</form>
+{% endblock %}

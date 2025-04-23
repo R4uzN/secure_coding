@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}신고하기{% endblock %}
+{% block content %}
+<h2>🚨 신고하기</h2>
+<p>신고 대상: {{ target_name | e }} ({{ target_type | e }})</p>
+
+<form method="POST" autocomplete="off">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">  
+  <input type="hidden" name="target_type" value="{{ target_type | e }}">
+  <input type="hidden" name="target_id" value="{{ target_id | e }}">
+
+  <label for="reason">신고 사유:</label>
+  <textarea id="reason" name="reason" maxlength="300" required></textarea>
+
+  <button type="submit">신고하기</button>
+</form>
+
+{% endblock %}

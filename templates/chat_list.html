@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}채팅 목록{% endblock %}
+{% block content %}
+<div class="container">
+  <h2 class="chat-title">📨 채팅 목록</h2>
+
+  <ul class="chat-list">
+    {% for p in partners %}
+      <li>
+        <a href="{{ url_for('start_chat', user_id=p.id) }}">
+          {{ p.username | e }}님과의 대화
+        </a>
+        <span class="last-time">(최근: {{ p.last_time | e }})</span>
+      </li>
+    {% else %}
+      <li>대화 기록이 없습니다.</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

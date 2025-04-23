@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}거래 내역{% endblock %}
+{% block content %}
+<h2>💰 거래 내역</h2>
+
+<table class="transaction-table">
+  <thead>
+    <tr>
+      <th>시간</th>
+      <th>내역</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for t in transactions %}
+    <tr class="{{ 'sent' if t.direction == 'sent' else 'received' }}">
+      <td>{{ t.timestamp }}</td>
+      <td>
+        {% if t.direction == 'sent' %}
+          → <strong>{{ t.receiver_name }}</strong>에게 <span class="amount">{{ t.amount }}원</span> 보냄
+        {% else %}
+          ← <strong>{{ t.sender_name }}</strong>에게 <span class="amount received">{{ t.amount }}원</span> 받음
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

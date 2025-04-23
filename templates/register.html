@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}회원가입{% endblock %}
+{% block content %}
+<h2>회원가입</h2>
+<form method="post" autocomplete="off">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">  
+  <label for="username">사용자명:</label>
+  <input type="text" name="username" id="username" maxlength="32" minlength="3"
+         pattern="^[a-zA-Z0-9_]+$" required
+         title="사용자명은 영문, 숫자, 밑줄(_)만 사용 가능합니다.">
+  <br>
+
+  <label for="password">비밀번호:</label>
+  <input type="password" name="password" id="password" maxlength="64" minlength="8"
+         pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{};:'&quot;\\|,.<>\/?]).{8,}$"
+         required>
+  <small style="color: #666; font-size: 0.85em;">
+    비밀번호는 8자 이상, 대문자, 소문자, 숫자, 특수문자를 각각 하나 이상 포함해야 합니다.
+  </small>
+  
+  <button type="submit">가입하기</button>
+</form>
+
+<p class="link-text">
+  이미 계정이 있으신가요? <a href="{{ url_for('login') }}">로그인 하러 가기 →</a>
+</p>
+{% endblock %}

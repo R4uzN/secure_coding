@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}1:1 채팅{% endblock %}
+
+{% block content %}
+<h2>1:1 채팅 시작</h2>
+<p><strong>상대방:</strong> {{ partner_name | e }}</p>
+<a href="{{ url_for('transfer_page', user_id=user.id) }}" class="btn-transfer">
+  💸 송금하기
+</a>
+
+<form method="post">
+  <label for="message">메시지 입력</label>
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">  
+  <input type="text" id="message" name="message" placeholder="메시지를 입력하세요" maxlength="300" autocomplete="off" required />
+  <button type="submit">전송</button>
+</form>
+
+<div id="chat-window" style="margin: 20px 0; padding: 15px; background: #f9f9f9; border-radius: 8px;">
+  {% for m in messages %}
+    <p>
+      <strong>{{ '나' if m.sender_id == session['user_id'] else '상대' }}:</strong>
+      {{ m.message | e }}
+      <small style="color: #999;">({{ m.timestamp | e }})</small>
+    </p>
+  {% else %}
+    <p style="color: #888;">아직 메시지가 없습니다.</p>
+  {% endfor %}
+</div>
+{% endblock %}
